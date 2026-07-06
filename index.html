@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📐 كتاب الإنشاء بالجيوجيبرا – بن الدين بويعقوب</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts for Arabic -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         * {
@@ -15,7 +18,7 @@
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', 'Tajawal', 'Almarai', sans-serif;
             background: linear-gradient(145deg, #0b0e1a 0%, #1a1f2f 100%);
             color: #e8edf5;
             min-height: 100vh;
@@ -35,6 +38,7 @@
             transition: all 0.3s ease;
         }
 
+        /* 🏷️ Header */
         .book-header {
             display: flex;
             flex-wrap: wrap;
@@ -50,7 +54,7 @@
             content: '';
             position: absolute;
             bottom: -2px;
-            left: 0;
+            right: 0;
             width: 120px;
             height: 2px;
             background: linear-gradient(90deg, #f7c948, #f5a623);
@@ -114,6 +118,7 @@
             border: 1px solid rgba(247, 201, 72, 0.08);
         }
 
+        /* 📖 PDF Viewer */
         .pdf-viewer-wrapper {
             background: rgba(0, 0, 0, 0.25);
             border-radius: 32px;
@@ -254,6 +259,7 @@
             opacity: 0.6;
         }
 
+        /* 📋 Footer */
         .book-footer {
             margin-top: 30px;
             display: flex;
@@ -312,6 +318,7 @@
             50% { opacity: 0.2; }
         }
 
+        /* 🔐 Password Modal */
         #password-modal {
             display: none;
             position: fixed;
@@ -382,7 +389,7 @@
             padding: 14px 24px;
             font-size: 1rem;
             color: #e8edf5;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
             text-align: center;
             letter-spacing: 2px;
             transition: all 0.3s ease;
@@ -404,7 +411,7 @@
             background: linear-gradient(135deg, #f7c948, #f5a623);
             border: none;
             color: #0b0e1a;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
             font-weight: 700;
             font-size: 1rem;
             padding: 14px;
@@ -442,30 +449,69 @@
             margin-top: 16px;
         }
 
+        /* 📱 Responsive */
         @media (max-width: 768px) {
             .book-container {
                 padding: 16px;
                 border-radius: 28px;
             }
-            .book-meta h1 { font-size: 1.5rem; }
-            .book-meta h2 { font-size: 0.95rem; }
-            .book-icon { width: 56px; height: 56px; font-size: 2.2rem; }
-            .pdf-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
-            .pdf-toolbar-left { justify-content: center; }
-            .book-footer { flex-direction: column; text-align: center; }
-            .modal-box { padding: 35px 25px; }
-            .modal-box h2 { font-size: 1.3rem; }
+            .book-meta h1 {
+                font-size: 1.5rem;
+            }
+            .book-meta h2 {
+                font-size: 0.95rem;
+            }
+            .book-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 2.2rem;
+            }
+            .pdf-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .pdf-toolbar-left {
+                justify-content: center;
+            }
+            .book-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .modal-box {
+                padding: 35px 25px;
+            }
+            .modal-box h2 {
+                font-size: 1.3rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .book-meta h1 { font-size: 1.2rem; }
-            .btn-pdf { width: 36px; height: 36px; font-size: 0.85rem; }
+            .book-meta h1 {
+                font-size: 1.2rem;
+            }
+            .btn-pdf {
+                width: 36px;
+                height: 36px;
+                font-size: 0.85rem;
+            }
         }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(247, 201, 72, 0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(247, 201, 72, 0.3); }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(247, 201, 72, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(247, 201, 72, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -482,7 +528,7 @@
                 <i class="fas fa-unlock-alt"></i> فتح الكتاب
             </button>
             <div class="error-msg" id="error-msg">⚠️ كلمة المرور غير صحيحة</div>
-            <div class="hint">🔑 كلمة المرور: <span style="color:#5f6b8a;font-family:monospace;">••••••••</span></div>
+            <div class="hint">🔑 كلمة المرور مطلوبة لفتح الكتاب</div>
         </div>
     </div>
 </div>
@@ -547,17 +593,20 @@
 
 <script>
     (function() {
-        // --- Password ---
+        // 🔑 كلمة المرور
         const CORRECT_PASSWORD = 'geogebra2026';
 
-        // --- DOM elements ---
+        // 📂 المسار الصحيح (الملف في نفس المجلد)
+        const PDF_PATH = "créer_avec_Geogebra_protected.pdf";
+
+        // DOM elements
         const modal = document.getElementById('password-modal');
         const passwordInput = document.getElementById('password-input');
         const unlockBtn = document.getElementById('unlock-btn');
         const errorMsg = document.getElementById('error-msg');
         const bookContent = document.getElementById('book-content');
 
-        // --- Unlock function ---
+        // 🔓 Unlock function
         function unlock() {
             const entered = passwordInput.value.trim();
             if (entered === CORRECT_PASSWORD) {
@@ -569,28 +618,22 @@
                 errorMsg.classList.add('show');
                 passwordInput.value = '';
                 passwordInput.focus();
-                setTimeout(() => {
-                    errorMsg.classList.remove('show');
-                }, 3000);
+                setTimeout(() => errorMsg.classList.remove('show'), 3000);
             }
         }
 
-        // --- Events for unlock ---
         unlockBtn.addEventListener('click', unlock);
         passwordInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') unlock();
         });
 
-        // Focus input on load
         window.addEventListener('load', () => {
             setTimeout(() => passwordInput.focus(), 300);
         });
 
-        // --- PDF.js ---
+        // 📄 PDF.js
         const pdfjsLib = window.pdfjsLib;
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-        const PDF_PATH = "créer_avec_Geogebra_protected.pdf";
 
         const container = document.getElementById('pdf-canvas-container');
         const loader = document.getElementById('pdf-loader');
@@ -635,18 +678,20 @@
                     rendering = false;
                 }).catch(err => {
                     console.error('Render error:', err);
-                    loader.innerHTML = `<div style="text-align:center;color:#f7c948;padding:30px;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;display:block;margin-bottom:16px;"></i>
-                        <p style="font-size:1rem;">تعذر عرض الصفحة ${num}</p>
-                    </div>`;
+                    loader.innerHTML = `
+                        <div style="text-align:center;color:#f7c948;padding:30px;">
+                            <i class="fas fa-exclamation-triangle" style="font-size:3rem;display:block;margin-bottom:16px;"></i>
+                            <p style="font-size:1rem;">تعذر عرض الصفحة ${num}</p>
+                        </div>`;
                     rendering = false;
                 });
             }).catch(err => {
                 console.error('Page load error:', err);
-                loader.innerHTML = `<div style="text-align:center;color:#f7c948;padding:30px;">
-                    <i class="fas fa-file-pdf" style="font-size:3rem;display:block;margin-bottom:16px;"></i>
-                    <p style="font-size:1rem;">⚠️ تعذر تحميل الصفحة ${num}</p>
-                </div>`;
+                loader.innerHTML = `
+                    <div style="text-align:center;color:#f7c948;padding:30px;">
+                        <i class="fas fa-file-pdf" style="font-size:3rem;display:block;margin-bottom:16px;"></i>
+                        <p style="font-size:1rem;">⚠️ تعذر تحميل الصفحة ${num}</p>
+                    </div>`;
                 rendering = false;
             });
         }
@@ -671,13 +716,20 @@
                 pageNum = 1;
                 renderPage(pageNum);
             }).catch(err => {
-                console.error('PDF load error:', err);
+                console.error('❌ خطأ في تحميل الملف:', err);
                 loader.innerHTML = `
                     <div style="text-align:center; color:#f7c948; padding:20px; max-width:500px;">
-                        <i class="fas fa-lock" style="font-size:3rem;display:block;margin-bottom:20px;color:#f7c948;"></i>
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;display:block;margin-bottom:20px;color:#f7c948;"></i>
                         <p style="font-size:1.2rem;font-weight:600;">تعذر تحميل الملف</p>
-                        <p style="font-size:0.9rem;opacity:0.6;margin-top:10px;">يرجى التأكد من وجود الملف في المسار الصحيح</p>
-                        <button onclick="location.reload();" style="margin-top:20px;background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.1);color:#f7c948;padding:8px 28px;border-radius:40px;cursor:pointer;font-family:inherit;">إعادة المحاولة</button>
+                        <p style="font-size:0.9rem;opacity:0.6;margin-top:10px;">
+                            ${err.message || 'يرجى التأكد من وجود الملف في المسار الصحيح'}
+                        </p>
+                        <p style="font-size:0.8rem;opacity:0.4;margin-top:6px;">
+                            📁 المسار: ${PDF_PATH}
+                        </p>
+                        <button onclick="location.reload();" style="margin-top:20px;background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.1);color:#f7c948;padding:8px 28px;border-radius:40px;cursor:pointer;font-family:inherit;">
+                            إعادة المحاولة
+                        </button>
                     </div>
                 `;
             });
@@ -727,6 +779,7 @@
         });
 
         console.log('📐 كتاب الإنشاء بالجيوجيبرا — بن الدين بويعقوب');
+        console.log('📂 المسار:', PDF_PATH);
     })();
 </script>
 
