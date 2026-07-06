@@ -326,7 +326,7 @@
 </div>
 
 <script>
-// Particles
+// ===== Particles =====
 (function(){
     const c = document.getElementById('particles');
     for(let i=0;i<60;i++){
@@ -340,6 +340,7 @@
 
 // ===== الإعدادات =====
 const correctPassword = "geogebra2026";
+// تأكد من أن اسم الملف صحيح ومطابق لما في المجلد
 const pdfPath = "créer_avec_Geogebra_protected.pdf";
 
 const pdfFrame   = document.getElementById('pdfFrame');
@@ -490,7 +491,7 @@ document.addEventListener('keydown', e => {
     }
 });
 
-// ===== Feature cards =====
+// ===== Feature cards animation =====
 const obs = new IntersectionObserver(entries => {
     entries.forEach(en => {
         if (en.isIntersecting) {
