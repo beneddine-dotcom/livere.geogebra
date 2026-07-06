@@ -7,11 +7,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --gold:    #f7c948;
+            --gold2:   #f5a623;
+            --gold3:   #ffd700;
+            --navy:    #0a0e27;
+            --navy2:   #0f1235;
+            --dim:     #8892b0;
+            --light:   #ccd6f6;
+        }
 
         body {
-            font-family: 'Cairo', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #0f1235 50%, #0a0e27 100%);
+            font-family: 'Cairo', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 50%, var(--navy) 100%);
             min-height: 100vh;
             color: #fff;
             overflow-x: hidden;
@@ -19,490 +29,497 @@
             flex-direction: column;
         }
 
+        /* ── Animated background ── */
         .bg-animation {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -2; overflow: hidden;
+            position: fixed; inset: 0; z-index: -2; overflow: hidden;
+        }
+        .bg-animation::before,
+        .bg-animation::after {
+            content: ''; position: absolute; width: 200%; height: 200%;
         }
         .bg-animation::before {
-            content: ''; position: absolute;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 20% 50%, rgba(255,215,0,0.08) 0%, transparent 50%);
-            animation: rotate 40s linear infinite;
+            background: radial-gradient(circle at 20% 50%, rgba(247,201,72,.08) 0%, transparent 50%);
+            animation: rotateBG 40s linear infinite;
         }
         .bg-animation::after {
-            content: ''; position: absolute;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 80% 50%, rgba(247,201,72,0.08) 0%, transparent 50%);
-            animation: rotate-reverse 35s linear infinite;
+            background: radial-gradient(circle at 80% 50%, rgba(245,166,35,.08) 0%, transparent 50%);
+            animation: rotateBG 35s linear infinite reverse;
         }
-        @keyframes rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-        @keyframes rotate-reverse { from{transform:rotate(360deg)} to{transform:rotate(0deg)} }
+        @keyframes rotateBG { to { transform: rotate(360deg); } }
 
-        .particles { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
+        /* ── Particles ── */
+        .particles { position:fixed; inset:0; z-index:-1; pointer-events:none; }
         .particle {
             position: absolute;
-            background: rgba(247,201,72,0.25);
+            background: rgba(247,201,72,.25);
             border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
+            animation: floatUp 20s ease-in-out infinite;
         }
-        @keyframes float {
-            0%,100%{transform:translateY(0) translateX(0);opacity:0}
-            10%{opacity:0.5} 90%{opacity:0.5}
-            100%{transform:translateY(-200px) translateX(100px);opacity:0}
+        @keyframes floatUp {
+            0%,100% { transform: translate(0,0); opacity: 0; }
+            10%      { opacity: .5; }
+            90%      { opacity: .5; }
+            100%     { transform: translate(100px,-200px); opacity: 0; }
         }
 
+        /* ── Layout ── */
         .container { flex:1; display:flex; flex-direction:column; position:relative; z-index:1; }
 
-        /* Hero */
+        /* ── Hero ── */
         .hero {
             text-align: center;
-            padding: 20px 20px 15px;
-            background: rgba(10,14,39,0.8);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(247,201,72,0.2);
+            padding: 18px 20px 14px;
+            background: rgba(10,14,39,.85);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(247,201,72,.22);
         }
         .hero h1 {
-            font-size: 1.8rem; font-weight: 800;
-            background: linear-gradient(135deg, #f7c948, #f5a623, #ffd700);
+            font-size: clamp(1.2rem, 3vw, 1.9rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold), var(--gold2), var(--gold3));
             -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
-        .hero .subtitle { font-size: 0.9rem; color: #ccd6f6; }
+        .hero .subtitle { font-size: .88rem; color: var(--light); }
         .hero .quote {
-            font-size: 0.8rem; color: #8892b0; font-style: italic;
+            font-size: .78rem; color: var(--dim); font-style: italic;
             max-width: 600px; margin: 8px auto 0; padding: 5px 15px;
-            background: rgba(247,201,72,0.05); border-radius: 20px; display: inline-block;
+            background: rgba(247,201,72,.05); border-radius: 20px; display: inline-block;
         }
 
-        /* PDF Viewer */
-        .book-container { display:flex; flex-direction:column; flex:1; background:rgba(10,14,39,0.4); }
-        .pdf-viewer { flex:1; width:100%; background:#0a0e1e; overflow:hidden; }
+        /* ── PDF Viewer ── */
+        .book-container { display:flex; flex-direction:column; flex:1; }
+
+        .pdf-viewer { width:100%; background:#0a0e1e; overflow:hidden; }
 
         /* Toolbar */
         .pdf-toolbar {
             background: #0f1235;
-            padding: 7px 12px;
+            padding: 7px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid rgba(247,201,72,0.2);
+            border-bottom: 1px solid rgba(247,201,72,.20);
             flex-wrap: nowrap;
         }
-        .toolbar-left  { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-        .toolbar-center{ display:flex; align-items:center; gap:6px; flex:1; justify-content:center; flex-wrap:wrap; }
-        .toolbar-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
-
-        .toolbar-label { color:#f7c948; font-weight:600; font-size:0.8rem; white-space:nowrap; }
+        .toolbar-left, .toolbar-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .toolbar-center  { display:flex; align-items:center; gap:6px; flex:1; justify-content:center; flex-wrap:wrap; }
+        .toolbar-label   { color:var(--gold); font-weight:600; font-size:.80rem; white-space:nowrap; }
 
         .tb-btn {
-            background: rgba(247,201,72,0.08);
-            border: 1px solid rgba(247,201,72,0.25);
+            background: rgba(247,201,72,.08);
+            border: 1px solid rgba(247,201,72,.25);
             border-radius: 8px;
-            color: #f7c948;
+            color: var(--gold);
             cursor: pointer;
-            transition: all 0.2s;
             font-family: 'Cairo', sans-serif;
             display: flex; align-items:center; justify-content:center;
-            padding: 5px 8px;
-            font-size: 0.78rem;
-            gap: 4px;
+            padding: 5px 9px; font-size:.78rem; gap:4px;
+            transition: background .2s, border-color .2s, transform .15s;
         }
-        .tb-btn:hover  { background:rgba(247,201,72,0.2); border-color:#f7c948; transform:translateY(-1px); }
-        .tb-btn:active { transform:scale(0.95); }
-        .tb-btn i { font-size:0.85rem; }
+        .tb-btn:hover  { background:rgba(247,201,72,.20); border-color:var(--gold); transform:translateY(-1px); }
+        .tb-btn:active { transform:scale(.95); }
 
         .page-input {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(247,201,72,0.3);
-            border-radius: 6px;
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.78rem;
-            text-align: center;
-            width: 40px;
-            padding: 4px 2px;
-            outline: none;
+            background: rgba(0,0,0,.35);
+            border: 1px solid rgba(247,201,72,.30);
+            border-radius: 6px; color:#fff;
+            font-family:'Cairo',sans-serif; font-size:.78rem;
+            text-align:center; width:42px; padding:4px 3px; outline:none;
+            transition: border-color .25s;
         }
-        .page-input:focus { border-color:#f7c948; }
-        .page-sep   { color:#8892b0; font-size:0.75rem; }
-        .zoom-display {
-            color: #ffd700; font-size:0.75rem; font-weight:600;
-            min-width:38px; text-align:center;
-        }
+        .page-input:focus { border-color:var(--gold); }
+        .page-sep  { color:var(--dim); font-size:.75rem; }
+        .zoom-display { color:var(--gold3); font-size:.75rem; font-weight:700; min-width:40px; text-align:center; }
 
-        /* PDF wrapper */
+        /* PDF iframe wrapper — hides browser toolbar */
         .pdf-wrapper {
             position: relative;
             width: 100%;
-            height: calc(100vh - 205px);
+            height: calc(100vh - 208px);
             overflow: hidden;
-            background: #1a1a2e;
+            background: #12122a;
         }
-
         .pdf-iframe {
             position: absolute;
-            top: -40px;
-            left: 0;
+            top: -40px; left: 0;
             width: 100%;
             height: calc(100% + 40px);
-            border: none;
-            display: block;
+            border: none; display: block;
         }
-
+        /* Covers the native browser PDF toolbar */
         .pdf-top-cover {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 40px;
-            background: #1a1a2e;
-            z-index: 5;
-            pointer-events: none;
+            position: absolute; top:0; left:0; right:0; height:40px;
+            background: #12122a; z-index:5; pointer-events:none;
         }
 
         /* Fullscreen */
-        .pdf-viewer.is-fullscreen { position:fixed; top:0; left:0; width:100%; height:100%; z-index:999; }
-        .pdf-viewer.is-fullscreen .pdf-wrapper { height: calc(100vh - 50px); }
+        .pdf-viewer.is-fullscreen {
+            position:fixed; inset:0; z-index:999;
+        }
+        .pdf-viewer.is-fullscreen .pdf-wrapper { height:calc(100vh - 50px); }
 
-        /* Features */
+        /* ── Features ── */
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px; margin: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 14px; margin: 18px;
         }
         .feature-card {
-            background: rgba(15,18,53,0.8); backdrop-filter:blur(10px);
-            border-radius: 15px; padding: 15px; text-align: center;
-            border: 1px solid rgba(247,201,72,0.15); transition: all 0.3s;
+            background: rgba(15,18,53,.85); backdrop-filter:blur(10px);
+            border-radius: 14px; padding: 16px; text-align:center;
+            border: 1px solid rgba(247,201,72,.14);
             opacity:0; transform:translateY(20px);
+            transition: opacity .5s ease, transform .5s ease, border-color .3s;
         }
-        .feature-card:hover { transform:translateY(-5px); border-color:#f7c948; }
-        .feature-icon { font-size:1.8rem; color:#f7c948; margin-bottom:10px; }
-        .feature-card h3 { font-size:1rem; margin-bottom:8px; color:#ffd700; }
-        .feature-card p  { color:#8892b0; line-height:1.5; font-size:0.75rem; }
+        .feature-card.visible { opacity:1; transform:translateY(0); }
+        .feature-card:hover   { transform:translateY(-5px); border-color:var(--gold); }
+        .feature-icon  { font-size:1.8rem; color:var(--gold); margin-bottom:10px; }
+        .feature-card h3 { font-size:.98rem; margin-bottom:7px; color:var(--gold3); }
+        .feature-card p  { color:var(--dim); line-height:1.55; font-size:.74rem; }
 
-        /* Footer */
+        /* ── Footer ── */
         .footer {
-            text-align:center; padding:15px 20px;
-            border-top:1px solid rgba(247,201,72,0.1);
-            background:rgba(10,14,39,0.9);
+            text-align:center; padding:14px 20px;
+            border-top:1px solid rgba(247,201,72,.10);
+            background:rgba(10,14,39,.92);
         }
-        .footer .isbn      { color:#8892b0; font-size:0.7rem; margin:5px 0; }
-        .footer .copyright { color:#5a6a8a; font-size:0.65rem; }
+        .footer .isbn      { color:var(--dim); font-size:.70rem; margin:4px 0; }
+        .footer .copyright { color:#4a5a7a; font-size:.64rem; }
 
-        /* Modal */
+        /* ── Modal ── */
         .modal {
-            display:none; position:fixed;
-            top:0; left:0; width:100%; height:100%;
-            background:rgba(0,0,0,0.9); backdrop-filter:blur(8px);
-            z-index:1000; justify-content:center; align-items:center;
+            display:none; position:fixed; inset:0;
+            background:rgba(0,0,0,.92); backdrop-filter:blur(10px);
+            z-index:2000; justify-content:center; align-items:center;
         }
+        .modal.open { display:flex; }
         .modal-content {
-            background:#0f1235; border-radius:20px; padding:30px;
-            text-align:center; border:1px solid #f7c948;
-            max-width:350px; width:90%;
-            animation:modalIn 0.3s ease;
+            background:#0f1235; border-radius:22px; padding:32px 28px;
+            text-align:center; border:1px solid var(--gold);
+            max-width:360px; width:92%;
+            animation: popIn .32s cubic-bezier(.34,1.56,.64,1);
         }
-        @keyframes modalIn { from{transform:scale(0.85);opacity:0} to{transform:scale(1);opacity:1} }
-        .modal-content h3   { margin:15px 0; color:#ffd700; }
-        .modal-content p    { color:#ccd6f6; font-size:0.85rem; }
-        .modal-content input {
-            width:100%; padding:12px; margin:20px 0;
-            background:#1a1f3a; border:1px solid #f7c948;
-            border-radius:10px; color:white; font-size:1rem;
-            font-family:'Cairo',sans-serif; outline:none; transition:border-color 0.3s;
+        @keyframes popIn { from{transform:scale(.8);opacity:0} to{transform:scale(1);opacity:1} }
+        .modal-icon    { font-size:3rem; color:var(--gold); display:block; margin-bottom:4px; }
+        .modal-content h3 { margin:10px 0 6px; color:var(--gold3); font-size:1.15rem; }
+        .modal-content p  { color:var(--light); font-size:.84rem; margin-bottom:4px; }
+        .modal-input {
+            width:100%; padding:12px; margin:16px 0 8px;
+            background:#1a1f3a; border:1.5px solid var(--gold);
+            border-radius:11px; color:#fff; font-size:1rem;
+            font-family:'Cairo',sans-serif; outline:none;
+            transition:border-color .3s, box-shadow .3s;
         }
-        .modal-content input:focus { border-color:#ffd700; box-shadow:0 0 0 3px rgba(255,215,0,0.15); }
-        .modal-content button {
-            background:linear-gradient(135deg,#f7c948,#f5a623);
-            color:#0a0e27; border:none; padding:12px 30px;
-            border-radius:25px; cursor:pointer; font-weight:700;
-            font-family:'Cairo',sans-serif; font-size:0.95rem; transition:all 0.2s;
+        .modal-input:focus { border-color:var(--gold3); box-shadow:0 0 0 3px rgba(255,215,0,.15); }
+        .modal-input.error { border-color:#ff4d4d; animation: shake .3s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+        .modal-btn {
+            background: linear-gradient(135deg,var(--gold),var(--gold2));
+            color:#0a0e27; border:none; padding:12px 32px; border-radius:26px;
+            cursor:pointer; font-weight:800; font-family:'Cairo',sans-serif;
+            font-size:.96rem; transition:transform .2s, opacity .2s; width:100%;
         }
-        .modal-content button:hover { transform:translateY(-2px); opacity:0.9; }
-        .error-msg  { color:#ff4d4d; font-size:0.8rem; margin-top:-10px; margin-bottom:10px; display:none; }
-        .modal-note { margin-top:15px; font-size:0.7rem; color:#8892b0; }
+        .modal-btn:hover { transform:translateY(-2px); opacity:.92; }
+        .error-msg  { color:#ff5555; font-size:.78rem; margin-bottom:10px; display:none; min-height:1.2em; }
+        .modal-note { margin-top:14px; font-size:.68rem; color:var(--dim); }
 
+        /* ── Responsive ── */
         @media (max-width:768px) {
-            .hero h1 { font-size:1.3rem; }
-            .pdf-wrapper { height:calc(100vh - 190px); }
             .toolbar-label { display:none; }
-            .features { margin:15px; gap:10px; }
+            .pdf-wrapper   { height:calc(100vh - 192px); }
+            .features      { margin:12px; gap:10px; }
         }
         @media (max-width:480px) {
             .pdf-toolbar { padding:6px 8px; gap:4px; }
-            .tb-btn { padding:5px 6px; }
+            .tb-btn      { padding:5px 6px; }
+            .zoom-display { min-width:30px; }
         }
     </style>
 </head>
 <body>
-<div class="bg-animation"></div>
-<div class="particles" id="particles"></div>
+<div class="bg-animation" aria-hidden="true"></div>
+<div class="particles" id="particles" aria-hidden="true"></div>
 
 <div class="container">
-    <div class="hero">
-        <h1>📐 الإنشاء بالجيوجيبرا</h1>
-        <div class="subtitle">الرياضيات الديناميكية والتفاعلية | بن الدين بويعقوب</div>
-        <div class="quote"><i class="fas fa-quote-right"></i> من النظرية إلى التطبيق، نصنع الرياضيات بلمسة إبداعية</div>
-    </div>
 
+    <!-- ── Hero ── -->
+    <header class="hero">
+        <h1>📐 الإنشاء بالجيوجيبرا</h1>
+        <div class="subtitle">الرياضيات الديناميكية والتفاعلية &nbsp;|&nbsp; بن الدين بويعقوب</div>
+        <div class="quote">
+            <i class="fas fa-quote-right"></i>
+            من النظرية إلى التطبيق، نصنع الرياضيات بلمسة إبداعية
+        </div>
+    </header>
+
+    <!-- ── PDF Viewer ── -->
     <div class="book-container">
         <div class="pdf-viewer" id="pdfViewer">
 
-            <div class="pdf-toolbar">
+            <div class="pdf-toolbar" role="toolbar" aria-label="أدوات عرض الكتاب">
+
                 <div class="toolbar-left">
-                    <span class="toolbar-label"><i class="fas fa-lock"></i> كتاب محمي</span>
+                    <span class="toolbar-label">
+                        <i class="fas fa-lock" aria-hidden="true"></i> كتاب محمي
+                    </span>
                 </div>
 
                 <div class="toolbar-center">
-                    <button class="tb-btn" id="prevPageBtn" title="السابقة"><i class="fas fa-chevron-right"></i></button>
-                    <input class="page-input" id="pageInput" type="number" value="1" min="1">
+                    <!-- Page nav -->
+                    <button class="tb-btn" id="prevPageBtn" title="الصفحة السابقة" aria-label="الصفحة السابقة">
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                    <input class="page-input" id="pageInput" type="number" value="1" min="1" aria-label="رقم الصفحة">
                     <span class="page-sep">/</span>
-                    <span class="page-sep" id="totalPages">—</span>
-                    <button class="tb-btn" id="nextPageBtn" title="التالية"><i class="fas fa-chevron-left"></i></button>
+                    <span class="page-sep" id="totalPages" aria-live="polite">—</span>
+                    <button class="tb-btn" id="nextPageBtn" title="الصفحة التالية" aria-label="الصفحة التالية">
+                        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    </button>
 
-                    <span style="color:rgba(247,201,72,0.2);margin:0 4px;">|</span>
+                    <span style="color:rgba(247,201,72,.18);margin:0 4px;" aria-hidden="true">|</span>
 
-                    <button class="tb-btn" id="zoomOutBtn" title="تصغير"><i class="fas fa-search-minus"></i></button>
-                    <span class="zoom-display" id="zoomDisplay">100%</span>
-                    <button class="tb-btn" id="zoomInBtn" title="تكبير"><i class="fas fa-search-plus"></i></button>
-                    <button class="tb-btn" id="zoomFitBtn" title="ملاءمة"><i class="fas fa-compress-arrows-alt"></i></button>
+                    <!-- Zoom -->
+                    <button class="tb-btn" id="zoomOutBtn" title="تصغير" aria-label="تصغير">
+                        <i class="fas fa-search-minus" aria-hidden="true"></i>
+                    </button>
+                    <span class="zoom-display" id="zoomDisplay" aria-live="polite">100%</span>
+                    <button class="tb-btn" id="zoomInBtn" title="تكبير" aria-label="تكبير">
+                        <i class="fas fa-search-plus" aria-hidden="true"></i>
+                    </button>
+                    <button class="tb-btn" id="zoomFitBtn" title="ملاءمة" aria-label="إعادة ضبط التكبير">
+                        <i class="fas fa-compress-arrows-alt" aria-hidden="true"></i>
+                    </button>
                 </div>
 
                 <div class="toolbar-right">
-                    <button class="tb-btn" id="fullscreenBtn" title="ملء الشاشة">
-                        <i class="fas fa-expand" id="fsIcon"></i>
+                    <button class="tb-btn" id="fullscreenBtn" title="ملء الشاشة" aria-label="ملء الشاشة">
+                        <i class="fas fa-expand" id="fsIcon" aria-hidden="true"></i>
                         <span id="fsLabel">ملء الشاشة</span>
                     </button>
                 </div>
             </div>
 
             <div class="pdf-wrapper" id="pdfWrapper">
-                <div class="pdf-top-cover"></div>
-                <iframe id="pdfFrame" class="pdf-iframe" src="" allowfullscreen></iframe>
+                <div class="pdf-top-cover" aria-hidden="true"></div>
+                <iframe
+                    id="pdfFrame"
+                    class="pdf-iframe"
+                    src=""
+                    allowfullscreen
+                    title="عرض الكتاب"
+                ></iframe>
             </div>
 
         </div>
     </div>
 
-    <div class="features">
+    <!-- ── Feature Cards ── -->
+    <section class="features" aria-label="مميزات الكتاب">
         <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div class="feature-icon"><i class="fas fa-chalkboard-teacher" aria-hidden="true"></i></div>
             <h3>للمعلمين</h3>
             <p>أنشئ دروسًا تفاعلية تنبض بالحياة، وساعد طلابك على رؤية الرياضيات بعيون جديدة</p>
         </div>
         <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="feature-icon"><i class="fas fa-user-graduate" aria-hidden="true"></i></div>
             <h3>للتلاميذ</h3>
             <p>استكشف المفاهيم الهندسية والجبرية خطوة بخطوة مع تمثيلات بصرية ديناميكية</p>
         </div>
         <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-university"></i></div>
+            <div class="feature-icon"><i class="fas fa-university" aria-hidden="true"></i></div>
             <h3>للأكاديميين</h3>
             <p>استخدم GeoGebra كأداة بحثية لاستكشاف الدوال والهندسة والإحصاء باحترافية</p>
         </div>
-    </div>
+    </section>
 
-    <div class="footer">
+    <!-- ── Footer ── -->
+    <footer class="footer">
         <div class="isbn">
-            <i class="fas fa-isbn"></i> ISBN: 978-9969-11-021-0 |
-            <i class="fas fa-calendar-alt"></i> الإيداع القانوني: أكتوبر 2025
+            <i class="fas fa-isbn" aria-hidden="true"></i> ISBN: 978-9969-11-021-0 &nbsp;|&nbsp;
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i> الإيداع القانوني: أكتوبر 2025
         </div>
         <div class="copyright">© 2025 بن الدين بويعقوب | جميع الحقوق محفوظة</div>
-    </div>
-</div>
+    </footer>
 
-<!-- Modal -->
-<div id="passwordModal" class="modal">
+</div><!-- /.container -->
+
+<!-- ── Password Modal ── -->
+<div id="passwordModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-content">
-        <i class="fas fa-lock" style="font-size:3rem;color:#f7c948;"></i>
-        <h3>📐 كتاب الإنشاء بالجيوجيبرا</h3>
+        <i class="fas fa-lock modal-icon" aria-hidden="true"></i>
+        <h3 id="modalTitle">📐 كتاب الإنشاء بالجيوجيبرا</h3>
         <p>هذا الكتاب محمي بكلمة مرور</p>
-        <input type="password" id="passwordInput" placeholder="أدخل كلمة المرور" autocomplete="off">
-        <div class="error-msg" id="errorMsg">❌ كلمة المرور غير صحيحة</div>
-        <button id="unlockBtn">🔓 فتح الكتاب</button>
+        <input
+            type="password"
+            id="passwordInput"
+            class="modal-input"
+            placeholder="أدخل كلمة المرور"
+            autocomplete="current-password"
+            aria-label="كلمة المرور"
+        >
+        <div class="error-msg" id="errorMsg" role="alert">❌ كلمة المرور غير صحيحة</div>
+        <button id="unlockBtn" class="modal-btn">🔓 فتح الكتاب</button>
         <p class="modal-note">للحصول على كلمة المرور، يرجى التواصل مع المؤلف</p>
     </div>
 </div>
 
 <script>
-// ===== Particles =====
+'use strict';
+
+/* ── Particles ── */
 (function(){
-    const c = document.getElementById('particles');
-    for(let i=0;i<60;i++){
-        const p=document.createElement('div');
-        p.classList.add('particle');
-        const s=Math.random()*3+1;
-        p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-delay:${Math.random()*20}s;animation-duration:${15+Math.random()*15}s`;
-        c.appendChild(p);
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 55; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const s = Math.random() * 3 + 1;
+        p.style.cssText =
+            `width:${s}px;height:${s}px;` +
+            `left:${Math.random()*100}%;` +
+            `animation-delay:${Math.random()*20}s;` +
+            `animation-duration:${15 + Math.random()*15}s`;
+        container.appendChild(p);
     }
 })();
 
-// ===== الإعدادات =====
-const correctPassword = "geogebra2026";
-// تأكد من أن اسم الملف صحيح ومطابق لما في المجلد
-const pdfPath = "créer_avec_Geogebra_protected.pdf";
+/* ── Config ── */
+const PASSWORD    = "geogebra2026";
+const PDF_PATH    = "créer_avec_Geogebra_protected.pdf";
+const ZOOM_STEPS  = [50, 75, 100, 125, 150, 175, 200];
 
-const pdfFrame   = document.getElementById('pdfFrame');
-const modal      = document.getElementById('passwordModal');
-const pwInput    = document.getElementById('passwordInput');
-const errorMsg   = document.getElementById('errorMsg');
-const pageInput  = document.getElementById('pageInput');
-const totalPagesEl = document.getElementById('totalPages');
-const zoomDisplay  = document.getElementById('zoomDisplay');
-const pdfViewer  = document.getElementById('pdfViewer');
-const pdfWrapper = document.getElementById('pdfWrapper');
-const fsIcon     = document.getElementById('fsIcon');
-const fsLabel    = document.getElementById('fsLabel');
-
+/* ── State ── */
 let currentPage = 1;
 let totalPages  = 1;
 let zoomLevel   = 100;
 let pdfLoaded   = false;
 
-// ===== تحميل PDF =====
+/* ── DOM refs ── */
+const pdfFrame       = document.getElementById('pdfFrame');
+const modal          = document.getElementById('passwordModal');
+const pwInput        = document.getElementById('passwordInput');
+const errorMsg       = document.getElementById('errorMsg');
+const pageInput      = document.getElementById('pageInput');
+const totalPagesEl   = document.getElementById('totalPages');
+const zoomDisplay    = document.getElementById('zoomDisplay');
+const pdfViewer      = document.getElementById('pdfViewer');
+const pdfWrapper     = document.getElementById('pdfWrapper');
+const fsIcon         = document.getElementById('fsIcon');
+const fsLabel        = document.getElementById('fsLabel');
+
+/* ── PDF src builder ── */
 function buildSrc(page, zoom) {
-    return pdfPath + '#toolbar=0&navpanes=0&page=' + page + '&zoom=' + zoom;
+    return `${PDF_PATH}#toolbar=0&navpanes=0&scrollbar=1&page=${page}&zoom=${zoom}`;
 }
 
+/* ── Load PDF ── */
 function loadPDF(page, zoom) {
-    pdfFrame.src = buildSrc(page || 1, zoom || 100);
+    page = Math.max(1, page || 1);
+    zoom = zoom || 100;
+    pdfFrame.src = buildSrc(page, zoom);
     pdfLoaded = true;
 }
 
-// ===== كلمة المرور =====
+/* ── Password unlock ── */
 function unlockPDF() {
-    if (pwInput.value.trim() === correctPassword) {
+    if (pwInput.value.trim() === PASSWORD) {
+        modal.classList.remove('open');
         modal.style.display = 'none';
         loadPDF(1, 100);
     } else {
         errorMsg.style.display = 'block';
         pwInput.value = '';
-        pwInput.style.borderColor = '#ff4d4d';
+        pwInput.classList.add('error');
         setTimeout(() => {
-            pwInput.style.borderColor = '#f7c948';
+            pwInput.classList.remove('error');
             errorMsg.style.display = 'none';
-        }, 2000);
+        }, 2200);
     }
 }
 
+/* Show modal on load */
 modal.style.display = 'flex';
+
 document.getElementById('unlockBtn').addEventListener('click', unlockPDF);
-pwInput.addEventListener('keypress', e => { if(e.key==='Enter') unlockPDF(); });
+pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') unlockPDF(); });
 
-// ===== الصفحات =====
-document.getElementById('prevPageBtn').addEventListener('click', () => {
-    if (!pdfLoaded || currentPage <= 1) return;
-    currentPage--;
-    pageInput.value = currentPage;
-    loadPDF(currentPage, zoomLevel);
-});
-
-document.getElementById('nextPageBtn').addEventListener('click', () => {
+/* ── Page navigation ── */
+function goToPage(page) {
     if (!pdfLoaded) return;
-    if (totalPages > 1 && currentPage >= totalPages) return;
-    currentPage++;
-    pageInput.value = currentPage;
+    page = Math.max(1, page);
+    if (totalPages > 1) page = Math.min(page, totalPages);
+    currentPage = page;
+    pageInput.value = page;
     loadPDF(currentPage, zoomLevel);
-});
+}
 
+document.getElementById('prevPageBtn').addEventListener('click', () => goToPage(currentPage - 1));
+document.getElementById('nextPageBtn').addEventListener('click', () => goToPage(currentPage + 1));
 pageInput.addEventListener('change', () => {
-    if (!pdfLoaded) return;
-    let p = parseInt(pageInput.value);
-    if (isNaN(p) || p < 1) p = 1;
-    if (totalPages > 1 && p > totalPages) p = totalPages;
-    currentPage = p;
-    pageInput.value = p;
-    loadPDF(currentPage, zoomLevel);
+    const p = parseInt(pageInput.value, 10);
+    goToPage(isNaN(p) ? currentPage : p);
 });
 
-// ===== التكبير =====
-const zoomSteps = [50, 75, 100, 125, 150, 175, 200];
+/* ── Zoom ── */
+function applyZoom(newZoom) {
+    zoomLevel = newZoom;
+    zoomDisplay.textContent = newZoom + '%';
+    if (pdfLoaded) loadPDF(currentPage, zoomLevel);
+}
 
 document.getElementById('zoomInBtn').addEventListener('click', () => {
-    if (!pdfLoaded) return;
-    let idx = zoomSteps.indexOf(zoomLevel);
-    if (idx === -1) idx = 2;
-    if (idx < zoomSteps.length - 1) {
-        zoomLevel = zoomSteps[idx + 1];
-        zoomDisplay.textContent = zoomLevel + '%';
-        loadPDF(currentPage, zoomLevel);
-    }
+    const idx = ZOOM_STEPS.indexOf(zoomLevel);
+    if (idx < ZOOM_STEPS.length - 1) applyZoom(ZOOM_STEPS[idx + 1]);
 });
-
 document.getElementById('zoomOutBtn').addEventListener('click', () => {
-    if (!pdfLoaded) return;
-    let idx = zoomSteps.indexOf(zoomLevel);
-    if (idx === -1) idx = 2;
-    if (idx > 0) {
-        zoomLevel = zoomSteps[idx - 1];
-        zoomDisplay.textContent = zoomLevel + '%';
-        loadPDF(currentPage, zoomLevel);
-    }
+    const idx = ZOOM_STEPS.indexOf(zoomLevel);
+    if (idx > 0) applyZoom(ZOOM_STEPS[idx - 1]);
 });
+document.getElementById('zoomFitBtn').addEventListener('click', () => applyZoom(100));
 
-document.getElementById('zoomFitBtn').addEventListener('click', () => {
-    if (!pdfLoaded) return;
-    zoomLevel = 100;
-    zoomDisplay.textContent = '100%';
-    loadPDF(currentPage, zoomLevel);
-});
-
-// ===== ملء الشاشة =====
+/* ── Full-screen ── */
 document.getElementById('fullscreenBtn').addEventListener('click', () => {
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-        const req = pdfViewer.requestFullscreen
-            || pdfViewer.webkitRequestFullscreen
-            || pdfViewer.mozRequestFullScreen
-            || pdfViewer.msRequestFullscreen;
-        if (req) req.call(pdfViewer);
+        const el = pdfViewer;
+        (el.requestFullscreen || el.webkitRequestFullscreen ||
+         el.mozRequestFullScreen || el.msRequestFullscreen || (() => {})).call(el);
     } else {
-        const exit = document.exitFullscreen
-            || document.webkitExitFullscreen
-            || document.mozCancelFullScreen
-            || document.msExitFullscreen;
-        if (exit) exit.call(document);
+        (document.exitFullscreen || document.webkitExitFullscreen ||
+         document.mozCancelFullScreen || document.msExitFullscreen || (() => {})).call(document);
     }
 });
 
-['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(ev => {
-    document.addEventListener(ev, () => {
-        const inFS = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
-        if (inFS) {
-            fsIcon.className = 'fas fa-compress';
-            fsLabel.textContent = 'تصغير';
-            pdfViewer.classList.add('is-fullscreen');
-            pdfWrapper.style.height = 'calc(100vh - 50px)';
-        } else {
-            fsIcon.className = 'fas fa-expand';
-            fsLabel.textContent = 'ملء الشاشة';
-            pdfViewer.classList.remove('is-fullscreen');
-            pdfWrapper.style.height = '';
-        }
-    });
-});
+['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+    .forEach(ev => document.addEventListener(ev, () => {
+        const inFS = !!(document.fullscreenElement ||
+                        document.webkitFullscreenElement ||
+                        document.mozFullScreenElement);
+        fsIcon.className   = inFS ? 'fas fa-compress' : 'fas fa-expand';
+        fsLabel.textContent = inFS ? 'تصغير' : 'ملء الشاشة';
+        pdfViewer.classList.toggle('is-fullscreen', inFS);
+        pdfWrapper.style.height = inFS ? 'calc(100vh - 50px)' : '';
+    }));
 
-// ===== منع الطباعة والحفظ =====
+/* ── Prevent print / save ── */
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && ['p','P','s','S'].includes(e.key)) {
+    if ((e.ctrlKey || e.metaKey) && /^[pPsS]$/.test(e.key)) {
         e.preventDefault();
-        return false;
     }
 });
 
-// ===== Feature cards animation =====
-const obs = new IntersectionObserver(entries => {
+/* ── Feature cards fade-in via IntersectionObserver ── */
+const cardObserver = new IntersectionObserver(entries => {
     entries.forEach(en => {
         if (en.isIntersecting) {
-            en.target.style.opacity = '1';
-            en.target.style.transform = 'translateY(0)';
-            en.target.style.transition = 'all 0.5s ease';
+            en.target.classList.add('visible');
+            cardObserver.unobserve(en.target);
         }
     });
-}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+}, { threshold: 0.12, rootMargin: '0px 0px -25px 0px' });
 
-document.querySelectorAll('.feature-card').forEach(card => obs.observe(card));
+document.querySelectorAll('.feature-card').forEach(c => cardObserver.observe(c));
 </script>
 </body>
 </html>
