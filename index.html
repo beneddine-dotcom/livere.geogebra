@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📐 كتاب الإنشاء بالجيوجيبرا – بن الدين بويعقوب</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(145deg, #0b0e1a 0%, #1a1f2f 100%);
+            color: #e8edf5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .book-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 30px 30px 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .book-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.15);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .book-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, #f7c948, #f5a623);
+            border-radius: 4px;
+        }
+
+        .book-title-group {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .book-icon {
+            font-size: 3rem;
+            color: #f7c948;
+            background: rgba(247, 201, 72, 0.08);
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(247, 201, 72, 0.15);
+            box-shadow: 0 8px 20px rgba(247, 201, 72, 0.05);
+        }
+
+        .book-meta h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f7c948, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .book-meta h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #a8b5d9;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .book-meta h2 i {
+            color: #f7c948;
+            font-size: 0.9rem;
+        }
+
+        .book-meta .author {
+            color: #e8edf5;
+            font-weight: 600;
+            background: rgba(247, 201, 72, 0.08);
+            padding: 2px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(247, 201, 72, 0.08);
+        }
+
+        .pdf-viewer-wrapper {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 32px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .pdf-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 12px 16px 12px;
+            gap: 12px;
+        }
+
+        .pdf-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .pdf-toolbar-left .page-info {
+            font-size: 0.9rem;
+            color: #a8b5d9;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .pdf-toolbar-left .page-info span {
+            color: #e8edf5;
+            font-weight: 600;
+        }
+
+        .btn-pdf {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #a8b5d9;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-pdf:hover {
+            background: rgba(247, 201, 72, 0.06);
+            border-color: rgba(247, 201, 72, 0.1);
+            color: #f7c948;
+            transform: scale(1.02);
+        }
+
+        .btn-pdf:active {
+            transform: scale(0.94);
+        }
+
+        .btn-pdf.primary {
+            background: rgba(247, 201, 72, 0.06);
+            border-color: rgba(247, 201, 72, 0.08);
+            color: #f7c948;
+        }
+
+        .btn-pdf.primary:hover {
+            background: rgba(247, 201, 72, 0.12);
+        }
+
+        .pdf-container {
+            position: relative;
+            background: #0b0e1a;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #pdf-canvas-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 550px;
+            transition: all 0.3s ease;
+        }
+
+        #pdf-canvas-container canvas {
+            max-width: 100%;
+            height: auto !important;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            background: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 60px 20px;
+            color: #a8b5d9;
+        }
+
+        .pdf-loader .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(247, 201, 72, 0.04);
+            border-top: 3px solid #f7c948;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pdf-loader i {
+            font-size: 3rem;
+            color: rgba(247, 201, 72, 0.15);
+        }
+
+        .pdf-loader p {
+            font-size: 0.95rem;
+            opacity: 0.6;
+        }
+
+        .book-footer {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 0.85rem;
+            color: #5f6b8a;
+        }
+
+        .book-footer i {
+            color: #f7c948;
+            margin: 0 4px;
+        }
+
+        .book-footer .love {
+            color: #f7c948;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .badge-dynamic {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(247, 201, 72, 0.03);
+            padding: 4px 14px 4px 10px;
+            border-radius: 40px;
+            border: 1px solid rgba(247, 201, 72, 0.04);
+            color: #a8b5d9;
+            font-size: 0.75rem;
+        }
+
+        .badge-dynamic i {
+            color: #f7c948;
+        }
+
+        .badge-dynamic .dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        #password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #password-modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: rgba(26, 31, 47, 0.95);
+            border-radius: 40px;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(247, 201, 72, 0.08);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            animation: modalFadeIn 0.4s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-box .lock-icon {
+            font-size: 3.5rem;
+            color: #f7c948;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .modal-box h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #e8edf5;
+            margin-bottom: 8px;
+        }
+
+        .modal-box p {
+            color: #a8b5d9;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .modal-box .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-box input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 60px;
+            padding: 14px 24px;
+            font-size: 1rem;
+            color: #e8edf5;
+            font-family: 'Cairo', sans-serif;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .modal-box input:focus {
+            border-color: rgba(247, 201, 72, 0.2);
+            background: rgba(247, 201, 72, 0.02);
+            box-shadow: 0 0 30px rgba(247, 201, 72, 0.02);
+        }
+
+        .modal-box input::placeholder {
+            color: #3f4a66;
+            letter-spacing: 0;
+        }
+
+        .modal-box .btn-unlock {
+            background: linear-gradient(135deg, #f7c948, #f5a623);
+            border: none;
+            color: #0b0e1a;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 14px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+        }
+
+        .modal-box .btn-unlock:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(247, 201, 72, 0.15);
+        }
+
+        .modal-box .btn-unlock:active {
+            transform: scale(0.96);
+        }
+
+        .modal-box .error-msg {
+            color: #f87171;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            min-height: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-box .error-msg.show {
+            opacity: 1;
+        }
+
+        .modal-box .hint {
+            font-size: 0.75rem;
+            color: #3f4a66;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .book-container {
+                padding: 16px;
+                border-radius: 28px;
+            }
+            .book-meta h1 { font-size: 1.5rem; }
+            .book-meta h2 { font-size: 0.95rem; }
+            .book-icon { width: 56px; height: 56px; font-size: 2.2rem; }
+            .pdf-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+            .pdf-toolbar-left { justify-content: center; }
+            .book-footer { flex-direction: column; text-align: center; }
+            .modal-box { padding: 35px 25px; }
+            .modal-box h2 { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 480px) {
+            .book-meta h1 { font-size: 1.2rem; }
+            .btn-pdf { width: 36px; height: 36px; font-size: 0.85rem; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(247, 201, 72, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(247, 201, 72, 0.3); }
+    </style>
+</head>
+<body>
+
+<!-- 🔐 Password Modal -->
+<div id="password-modal" class="active">
+    <div class="modal-box">
+        <i class="fas fa-lock lock-icon"></i>
+        <h2>📐 الكتاب محمي</h2>
+        <p>أدخل كلمة المرور لفتح<br><strong style="color:#f7c948;">الإنشاء بالجيوجيبرا</strong></p>
+        <div class="input-group">
+            <input type="password" id="password-input" placeholder="••••••••" autofocus>
+            <button class="btn-unlock" id="unlock-btn">
+                <i class="fas fa-unlock-alt"></i> فتح الكتاب
+            </button>
+            <div class="error-msg" id="error-msg">⚠️ كلمة المرور غير صحيحة</div>
+            <div class="hint">🔑 كلمة المرور: <span style="color:#5f6b8a;font-family:monospace;">••••••••</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- 📖 Main Content -->
+<div class="book-container" id="book-content" style="display:none;">
+    <header class="book-header">
+        <div class="book-title-group">
+            <div class="book-icon"><i class="fas fa-cubes"></i></div>
+            <div class="book-meta">
+                <h1>📐 الإنشاء بالجيوجيبرا</h1>
+                <h2>
+                    <i class="fas fa-pen-fancy"></i>
+                    <span class="author">بن الدين بويعقوب</span>
+                    <span style="color:#5f6b8a;font-weight:300;">•</span>
+                    <i class="fas fa-chart-line"></i>
+                    الرياضيات الديناميكية والتفاعلية
+                </h2>
+            </div>
+        </div>
+    </header>
+
+    <div class="pdf-viewer-wrapper">
+        <div class="pdf-toolbar">
+            <div class="pdf-toolbar-left">
+                <button class="btn-pdf" id="prev-page" title="السابقة"><i class="fas fa-chevron-right"></i></button>
+                <span class="page-info"><span id="current-page">0</span> / <span id="total-pages">0</span></span>
+                <button class="btn-pdf" id="next-page" title="التالية"><i class="fas fa-chevron-left"></i></button>
+                <button class="btn-pdf primary" id="zoom-in" title="تكبير"><i class="fas fa-search-plus"></i></button>
+                <button class="btn-pdf primary" id="zoom-out" title="تصغير"><i class="fas fa-search-minus"></i></button>
+                <button class="btn-pdf primary" id="reset-zoom" title="إعادة تعيين"><i class="fas fa-expand"></i></button>
+            </div>
+            <div>
+                <span class="badge-dynamic"><span class="dot"></span><i class="fas fa-sync-alt fa-fw"></i> تفاعلي</span>
+                <span class="badge-dynamic" style="margin-right:6px;"><i class="fas fa-book-open"></i> قراءة مباشرة</span>
+            </div>
+        </div>
+
+        <div class="pdf-container">
+            <div id="pdf-canvas-container">
+                <div class="pdf-loader" id="pdf-loader">
+                    <div class="spinner"></div>
+                    <i class="fas fa-file-pdf"></i>
+                    <p>جاري تحميل الكتاب ...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="book-footer">
+        <div>
+            <i class="fas fa-copyright"></i> بن الدين بويعقوب —
+            <i class="fas fa-gem" style="color:#f7c948;margin:0 4px;"></i>
+            الإنشاء بالجيوجيبرا · الرياضيات الديناميكية والتفاعلية
+        </div>
+        <div>
+            <i class="fas fa-code"></i>
+            <span class="love">❤</span> تصميم تفاعلي
+        </div>
+    </footer>
+</div>
+
+<script>
+    (function() {
+        // --- Password ---
+        const CORRECT_PASSWORD = 'geogebra2026';
+
+        // --- DOM elements ---
+        const modal = document.getElementById('password-modal');
+        const passwordInput = document.getElementById('password-input');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const errorMsg = document.getElementById('error-msg');
+        const bookContent = document.getElementById('book-content');
+
+        // --- Unlock function ---
+        function unlock() {
+            const entered = passwordInput.value.trim();
+            if (entered === CORRECT_PASSWORD) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                bookContent.style.display = 'block';
+                initializePDF();
+            } else {
+                errorMsg.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+                setTimeout(() => {
+                    errorMsg.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // --- Events for unlock ---
+        unlockBtn.addEventListener('click', unlock);
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') unlock();
+        });
+
+        // Focus input on load
+        window.addEventListener('load', () => {
+            setTimeout(() => passwordInput.focus(), 300);
+        });
+
+        // --- PDF.js ---
+        const pdfjsLib = window.pdfjsLib;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        const PDF_PATH = "C:\\pt\\créer_avec_Geogebra_protected.pdf";
+
+        const container = document.getElementById('pdf-canvas-container');
+        const loader = document.getElementById('pdf-loader');
+        const canvas = document.createElement('canvas');
+        canvas.id = 'pdf-canvas';
+        canvas.style.display = 'none';
+        container.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        const currentPageSpan = document.getElementById('current-page');
+        const totalPagesSpan = document.getElementById('total-pages');
+
+        let pdfDoc = null;
+        let pageNum = 1;
+        let totalPages = 0;
+        let scale = 1.2;
+        let maxScale = 2.5;
+        let minScale = 0.6;
+        let rendering = false;
+
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+        const zoomInBtn = document.getElementById('zoom-in');
+        const zoomOutBtn = document.getElementById('zoom-out');
+        const resetZoomBtn = document.getElementById('reset-zoom');
+
+        function renderPage(num) {
+            if (!pdfDoc || rendering) return;
+            rendering = true;
+            loader.style.display = 'flex';
+            canvas.style.display = 'none';
+
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale: scale });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                const renderContext = { canvasContext: ctx, viewport: viewport };
+                page.render(renderContext).promise.then(() => {
+                    canvas.style.display = 'block';
+                    loader.style.display = 'none';
+                    currentPageSpan.textContent = num;
+                    rendering = false;
+                }).catch(err => {
+                    console.error('Render error:', err);
+                    loader.innerHTML = `<div style="text-align:center;color:#f7c948;padding:30px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;display:block;margin-bottom:16px;"></i>
+                        <p style="font-size:1rem;">تعذر عرض الصفحة ${num}</p>
+                    </div>`;
+                    rendering = false;
+                });
+            }).catch(err => {
+                console.error('Page load error:', err);
+                loader.innerHTML = `<div style="text-align:center;color:#f7c948;padding:30px;">
+                    <i class="fas fa-file-pdf" style="font-size:3rem;display:block;margin-bottom:16px;"></i>
+                    <p style="font-size:1rem;">⚠️ تعذر تحميل الصفحة ${num}</p>
+                </div>`;
+                rendering = false;
+            });
+        }
+
+        function initializePDF() {
+            loader.style.display = 'flex';
+            loader.innerHTML = `
+                <div class="spinner"></div>
+                <i class="fas fa-file-pdf"></i>
+                <p>جاري فتح الكتاب ...</p>
+            `;
+            canvas.style.display = 'none';
+
+            pdfjsLib.getDocument({
+                url: PDF_PATH,
+                password: CORRECT_PASSWORD,
+                withCredentials: false,
+            }).promise.then(doc => {
+                pdfDoc = doc;
+                totalPages = doc.numPages;
+                totalPagesSpan.textContent = totalPages;
+                pageNum = 1;
+                renderPage(pageNum);
+            }).catch(err => {
+                console.error('PDF load error:', err);
+                loader.innerHTML = `
+                    <div style="text-align:center; color:#f7c948; padding:20px; max-width:500px;">
+                        <i class="fas fa-lock" style="font-size:3rem;display:block;margin-bottom:20px;color:#f7c948;"></i>
+                        <p style="font-size:1.2rem;font-weight:600;">تعذر تحميل الملف</p>
+                        <p style="font-size:0.9rem;opacity:0.6;margin-top:10px;">يرجى التأكد من وجود الملف في المسار الصحيح</p>
+                        <button onclick="location.reload();" style="margin-top:20px;background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.1);color:#f7c948;padding:8px 28px;border-radius:40px;cursor:pointer;font-family:inherit;">إعادة المحاولة</button>
+                    </div>
+                `;
+            });
+        }
+
+        function goToPage(num) {
+            if (!pdfDoc) return;
+            if (num < 1) num = 1;
+            if (num > totalPages) num = totalPages;
+            if (num === pageNum && canvas.style.display !== 'none') return;
+            pageNum = num;
+            renderPage(pageNum);
+        }
+
+        function nextPage() { if (pageNum < totalPages) goToPage(pageNum + 1); }
+        function prevPage() { if (pageNum > 1) goToPage(pageNum - 1); }
+        function changeZoom(delta) {
+            let newScale = scale + delta;
+            if (newScale < minScale) newScale = minScale;
+            if (newScale > maxScale) newScale = maxScale;
+            if (newScale === scale) return;
+            scale = newScale;
+            renderPage(pageNum);
+        }
+        function resetZoom() { scale = 1.2; renderPage(pageNum); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { prevPage(); e.preventDefault(); }
+            if (e.key === 'ArrowLeft') { nextPage(); e.preventDefault(); }
+            if (e.key === '+' || e.key === '=') { changeZoom(0.1); e.preventDefault(); }
+            if (e.key === '-') { changeZoom(-0.1); e.preventDefault(); }
+            if (e.key === '0') { resetZoom(); e.preventDefault(); }
+        });
+
+        prevBtn.addEventListener('click', prevPage);
+        nextBtn.addEventListener('click', nextPage);
+        zoomInBtn.addEventListener('click', () => changeZoom(0.1));
+        zoomOutBtn.addEventListener('click', () => changeZoom(-0.1));
+        resetZoomBtn.addEventListener('click', resetZoom);
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (pdfDoc && !rendering) renderPage(pageNum);
+            }, 300);
+        });
+
+        console.log('📐 كتاب الإنشاء بالجيوجيبرا — بن الدين بويعقوب');
+    })();
+</script>
+
+</body>
+</html>
